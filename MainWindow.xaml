@@ -6,7 +6,105 @@
         xmlns:local="clr-namespace:SSEC_Inventory"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
+   <Window.Resources>
+      <Style TargetType="TabControl">
+         <Setter Property="Background" Value="Transparent"/>
+         <Setter Property="BorderBrush" Value="Transparent"/>
+         <Setter Property="Padding" Value="10"/>
+      </Style>
+      <Style TargetType="TabItem">
+         <Setter Property="Margin" Value="2,0,2,0"/>
+         <Setter Property="Padding" Value="16,8"/>
+         <Setter Property="FontWeight" Value="Bold"/>
+         <Setter Property="Foreground" Value="#333"/>
+         <Setter Property="Template">
+            <Setter.Value>
+               <ControlTemplate TargetType="TabItem">
+                  <Border
+                            x:Name="Border"
+                            Background="{TemplateBinding Background}"
+                            CornerRadius="10,10,0,0"
+                            BorderThickness="1"
+                            BorderBrush="#888"
+                            Padding="{TemplateBinding Padding}">
+                     <ContentPresenter
+                                x:Name="ContentSite"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Center"
+                                ContentSource="Header"/>
+                  </Border>
+                  <ControlTemplate.Triggers>
+                     <Trigger Property="IsSelected" Value="True">
+                        <Setter TargetName="Border" Property="Background">
+                           <Setter.Value>
+                              <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                 <GradientStop Color="#FF6A00" Offset="0.0"/>
+                                 <GradientStop Color="#FFD800" Offset="1.0"/>
+                              </LinearGradientBrush>
+                           </Setter.Value>
+                        </Setter>
+                        <Setter Property="Foreground" Value="White"/>
+                        <Setter TargetName="Border" Property="BorderBrush" Value="#FF6A00"/>
+                     </Trigger>
+                     <Trigger Property="IsMouseOver" Value="True">
+                        <Setter TargetName="Border" Property="Background">
+                           <Setter.Value>
+                              <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                 <GradientStop Color="#FFD800" Offset="0.0"/>
+                                 <GradientStop Color="#FF6A00" Offset="1.0"/>
+                              </LinearGradientBrush>
+                           </Setter.Value>
+                        </Setter>
+                        <Setter Property="Foreground" Value="#FF6A00"/>
+                     </Trigger>
+                     <Trigger Property="IsEnabled" Value="False">
+                        <Setter Property="Foreground" Value="#AAA"/>
+                     </Trigger>
+                  </ControlTemplate.Triggers>
+               </ControlTemplate>
+            </Setter.Value>
+         </Setter>
+         <Setter Property="Background">
+            <Setter.Value>
+               <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                  <GradientStop Color="#FFF" Offset="0.0"/>
+                  <GradientStop Color="#EEE" Offset="1.0"/>
+               </LinearGradientBrush>
+            </Setter.Value>
+         </Setter>
+      </Style>
+   </Window.Resources>
+   <Grid>
+      <Grid.ColumnDefinitions>
+         <ColumnDefinition Width="9*"/>
+         <ColumnDefinition Width="27*"/>
+         <ColumnDefinition Width="4*"/>
+      </Grid.ColumnDefinitions>
 
-    </Grid>
+      <TabControl Grid.ColumnSpan="3" SelectionChanged="TabControl_SelectionChanged">
+         <TabItem Header="Tab 1">
+            <TextBlock Text="Content for Tab 1" Margin="10"/>
+         </TabItem>
+         <TabItem Header="Tab 2">
+            <TextBlock Text="Content for Tab 2" Margin="10"/>
+         </TabItem>
+         <TabItem Header="Tab 3">
+            <TextBlock Text="Content for Tab 3" Margin="10" Background="{DynamicResource {x:Static SystemColors.AccentColorBrushKey}}"/>
+         </TabItem>
+      </TabControl>
+
+      <Popup x:Name="TabPopup"
+               Placement="Center"
+               StaysOpen="False"
+               AllowsTransparency="True"
+               PopupAnimation="Fade">
+         <Border Background="#FF6A00" CornerRadius="8" Padding="16" BorderBrush="#FFD800" BorderThickness="2" >
+            <TextBlock x:Name="TabPopupText"
+                           Foreground="White"
+                           FontWeight="Bold"
+                           FontSize="16"
+                           Text=""/>
+         </Border>
+      </Popup>
+   </Grid>
 </Window>

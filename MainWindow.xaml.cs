@@ -8,6 +8,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Threading.Tasks; // Ensure this namespace is included
 
 namespace SSEC_Inventory
 {
@@ -19,6 +20,17 @@ namespace SSEC_Inventory
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // Handle the selection change logic here
+            if (e.Source is TabControl)
+            {
+                TabItem selectedTab = (TabItem)((TabControl)sender).SelectedItem;
+                TabPopupText.Text = $"You selected: {selectedTab.Header}";
+                TabPopup.IsOpen = true;
+            }
         }
     }
 }
