@@ -1,4 +1,8 @@
-﻿<Window x:Class="SSEC_Inventory.MainWindow"
+﻿<!--
+    MainWindow.xaml
+    Defines the main window layout, styles, and controls for the application.
+-->
+<Window x:Class="SSEC_Inventory.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -7,11 +11,13 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
    <Window.Resources>
+      <!-- Style for TabControl: removes background and border, adds padding -->
       <Style TargetType="TabControl">
          <Setter Property="Background" Value="Transparent"/>
          <Setter Property="BorderBrush" Value="Transparent"/>
          <Setter Property="Padding" Value="10"/>
       </Style>
+      <!-- Style for TabItem: customizes appearance and triggers for selection, hover, and disabled states -->
       <Style TargetType="TabItem">
          <Setter Property="Margin" Value="2,0,2,0"/>
          <Setter Property="Padding" Value="16,8"/>
@@ -34,6 +40,7 @@
                                 ContentSource="Header"/>
                   </Border>
                   <ControlTemplate.Triggers>
+                     <!-- Selected tab appearance -->
                      <Trigger Property="IsSelected" Value="True">
                         <Setter TargetName="Border" Property="Background">
                            <Setter.Value>
@@ -46,6 +53,7 @@
                         <Setter Property="Foreground" Value="White"/>
                         <Setter TargetName="Border" Property="BorderBrush" Value="#FF6A00"/>
                      </Trigger>
+                     <!-- Mouse over tab appearance -->
                      <Trigger Property="IsMouseOver" Value="True">
                         <Setter TargetName="Border" Property="Background">
                            <Setter.Value>
@@ -57,6 +65,7 @@
                         </Setter>
                         <Setter Property="Foreground" Value="#FF6A00"/>
                      </Trigger>
+                     <!-- Disabled tab appearance -->
                      <Trigger Property="IsEnabled" Value="False">
                         <Setter Property="Foreground" Value="#AAA"/>
                      </Trigger>
@@ -64,6 +73,7 @@
                </ControlTemplate>
             </Setter.Value>
          </Setter>
+         <!-- Default background for tabs -->
          <Setter Property="Background">
             <Setter.Value>
                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
@@ -81,6 +91,7 @@
          <ColumnDefinition Width="4*"/>
       </Grid.ColumnDefinitions>
 
+      <!-- TabControl with three tabs, handles selection change event -->
       <TabControl Grid.ColumnSpan="3" SelectionChanged="TabControl_SelectionChanged">
          <TabItem Header="Tab 1">
             <TextBlock Text="Content for Tab 1" Margin="10"/>
@@ -93,6 +104,7 @@
          </TabItem>
       </TabControl>
 
+      <!-- Popup to display selected tab information -->
       <Popup x:Name="TabPopup"
                Placement="Center"
                StaysOpen="False"

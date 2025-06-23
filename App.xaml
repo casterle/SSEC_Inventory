@@ -1,9 +1,14 @@
-﻿<Application x:Class="SSEC_Inventory.App"
+﻿<!--
+    App.xaml
+    Entry point for the WPF application.
+    Defines application-level resources and startup window.
+-->
+<Application x:Class="SSEC_Inventory.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:SSEC_Inventory"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+         <!-- Application-wide resources can be defined here -->
     </Application.Resources>
 </Application>
