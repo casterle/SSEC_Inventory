@@ -1,6 +1,9 @@
 ﻿<!--
     MainWindow.xaml
     Defines the main window layout, styles, and controls for the application.
+    - Custom styles for TabControl and TabItem.
+    - Three tabs with sample content.
+    - Popup for tab selection feedback.
 -->
 <Window x:Class="SSEC_Inventory.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -93,13 +96,13 @@
 
       <!-- TabControl with three tabs, handles selection change event -->
       <TabControl Grid.ColumnSpan="3" SelectionChanged="TabControl_SelectionChanged">
-         <TabItem Header="Tab 1">
+         <TabItem Header="Tab 1" AutomationProperties.Name="Tab 1">
             <TextBlock Text="Content for Tab 1" Margin="10"/>
          </TabItem>
-         <TabItem Header="Tab 2">
+         <TabItem Header="Tab 2" AutomationProperties.Name="Tab 2">
             <TextBlock Text="Content for Tab 2" Margin="10"/>
          </TabItem>
-         <TabItem Header="Tab 3">
+         <TabItem Header="Tab 3" AutomationProperties.Name="Tab 3">
             <TextBlock Text="Content for Tab 3" Margin="10" Background="{DynamicResource {x:Static SystemColors.AccentColorBrushKey}}"/>
          </TabItem>
       </TabControl>
