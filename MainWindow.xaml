@@ -107,6 +107,9 @@
          </TabItem>
       </TabControl>
 
+      <!-- Button to throw exception -->
+      <Button Content="Throw Exception" Click="ThrowException_Click" Margin="10"/>
+
       <!-- Popup to display selected tab information -->
       <Popup x:Name="TabPopup"
                Placement="Center"

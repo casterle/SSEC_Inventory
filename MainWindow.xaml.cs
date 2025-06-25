@@ -35,6 +35,15 @@ namespace SSEC_Inventory
       }
 
       /// <summary>
+      /// Handles the click event for the ThrowException button.
+      /// Throws a test exception for the global handler.
+      /// </summary>
+      private void ThrowException_Click(object sender, RoutedEventArgs e)
+      {
+         throw new System.Exception("Test exception for global handler");
+      }
+
+      /// <summary>
       /// Destructor for MainWindow. Logs when the window is finalized.
       /// </summary>
       ~MainWindow()

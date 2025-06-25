@@ -52,7 +52,6 @@ namespace SSEC_Inventory
          Log.Error(e.Exception, "Unhandled UI exception at {Time} on {Machine} by {User}. StackTrace: {StackTrace}", time, machine, user, stackTrace);
 
          // Optionally, write to Windows Event Log for critical errors.
-         // This may fail if the application does not have permission.
          try {
             EventLog.WriteEntry("Application", $"Unhandled UI exception: {e.Exception}", EventLogEntryType.Error);
          } catch { /* Ignore if not permitted */ }
@@ -63,12 +62,15 @@ namespace SSEC_Inventory
             $"Time: {time}\n" +
             $"User: {user}\n" +
             $"Machine: {machine}\n\n" +
-            "Please contact support if the problem persists.",
+            "The application will now close.",
             "Application Error",
             MessageBoxButton.OK,
             MessageBoxImage.Error);
 
-         e.Handled = true; // Prevents the application from crashing.
+         e.Handled = true; // Prevents the default crash dialog
+
+         // Gracefully shut down the application
+         Application.Current.Shutdown();
       }
 
       /// <summary>
@@ -88,7 +90,8 @@ namespace SSEC_Inventory
          } else {
             Log.Error("Unhandled non-UI exception (non-Exception object) at {Time} on {Machine} by {User}: {ExceptionObject}", time, machine, user, e.ExceptionObject);
          }
-         // Note: Application may still terminate after this event.
+
+
       }
 
       /// <summary>
