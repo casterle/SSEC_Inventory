@@ -1,0 +1,239 @@
+<!--
+    PremiumFeatureUsageControl.xaml
+    User control for displaying premium feature usage statistics and details
+-->
+<UserControl x:Class="SSEC_Inventory.UserControls.PremiumFeatureUsageControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SSEC_Inventory.UserControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    
+    <UserControl.Resources>
+        <!-- Style for the main container -->
+        <Style TargetType="Border" x:Key="MainBorder">
+            <Setter Property="Background" Value="#F8F9FA"/>
+            <Setter Property="BorderBrush" Value="#E0E0E0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Padding" Value="16"/>
+            <Setter Property="Margin" Value="8"/>
+        </Style>
+        
+        <!-- Style for feature cards -->
+        <Style TargetType="Border" x:Key="FeatureCard">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#D1D5DB"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="6"/>
+            <Setter Property="Padding" Value="12"/>
+            <Setter Property="Margin" Value="4"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect Color="LightGray" Direction="270" ShadowDepth="2" Opacity="0.2"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+        <!-- Style for progress bars -->
+        <Style TargetType="ProgressBar" x:Key="UsageProgressBar">
+            <Setter Property="Height" Value="8"/>
+            <Setter Property="Background" Value="#E5E7EB"/>
+            <Setter Property="Foreground" Value="#10B981"/>
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
+        
+        <!-- Style for headers -->
+        <Style TargetType="TextBlock" x:Key="HeaderStyle">
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="#374151"/>
+            <Setter Property="Margin" Value="0,0,0,12"/>
+        </Style>
+        
+        <!-- Style for feature names -->
+        <Style TargetType="TextBlock" x:Key="FeatureNameStyle">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="#1F2937"/>
+            <Setter Property="Margin" Value="0,0,0,4"/>
+        </Style>
+        
+        <!-- Style for usage statistics -->
+        <Style TargetType="TextBlock" x:Key="UsageStatStyle">
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Foreground" Value="#6B7280"/>
+            <Setter Property="Margin" Value="0,2"/>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <!-- Header -->
+        <Border Grid.Row="0" Style="{StaticResource MainBorder}">
+            <StackPanel>
+                <TextBlock Text="Premium Feature Usage" Style="{StaticResource HeaderStyle}"/>
+                <TextBlock x:Name="LastUpdatedText" 
+                          Text="Last updated: Loading..." 
+                          Style="{StaticResource UsageStatStyle}"/>
+            </StackPanel>
+        </Border>
+        
+        <!-- Summary Statistics -->
+        <Border Grid.Row="1" Style="{StaticResource MainBorder}">
+            <StackPanel>
+                <TextBlock Text="Usage Summary" Style="{StaticResource HeaderStyle}"/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <StackPanel Grid.Column="0" Margin="0,0,12,0">
+                        <TextBlock x:Name="TotalFeaturesText" 
+                                  Text="Total Features: 0" 
+                                  Style="{StaticResource UsageStatStyle}"/>
+                        <TextBlock x:Name="ActiveFeaturesText" 
+                                  Text="Active Features: 0" 
+                                  Style="{StaticResource UsageStatStyle}"/>
+                    </StackPanel>
+                    
+                    <StackPanel Grid.Column="1" Margin="0,0,12,0">
+                        <TextBlock x:Name="TotalUsageText" 
+                                  Text="Total Usage: 0" 
+                                  Style="{StaticResource UsageStatStyle}"/>
+                        <TextBlock x:Name="FeaturesAtLimitText" 
+                                  Text="At Limit: 0" 
+                                  Style="{StaticResource UsageStatStyle}"/>
+                    </StackPanel>
+                    
+                    <StackPanel Grid.Column="2" Margin="0,0,12,0">
+                        <TextBlock x:Name="MostUsedFeatureText" 
+                                  Text="Most Used: None" 
+                                  Style="{StaticResource UsageStatStyle}"/>
+                        <TextBlock x:Name="LastActivityText" 
+                                  Text="Last Activity: None" 
+                                  Style="{StaticResource UsageStatStyle}"/>
+                    </StackPanel>
+                    
+                    <StackPanel Grid.Column="3">
+                        <Button x:Name="RefreshButton" 
+                               Content="Refresh" 
+                               Click="RefreshButton_Click"
+                               Padding="12,4" 
+                               Margin="0,4"/>
+                        <Button x:Name="ResetButton" 
+                               Content="Reset Selected" 
+                               Click="ResetButton_Click"
+                               Padding="12,4" 
+                               Margin="0,4"/>
+                    </StackPanel>
+                </Grid>
+            </StackPanel>
+        </Border>
+        
+        <!-- Feature Usage List -->
+        <Border Grid.Row="2" Style="{StaticResource MainBorder}">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <TextBlock Text="Feature Details" Style="{StaticResource HeaderStyle}"/>
+                    <ItemsControl x:Name="FeatureUsageList">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Style="{StaticResource FeatureCard}">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        
+                                        <!-- Feature Name -->
+                                        <TextBlock Grid.Row="0" Grid.Column="0" 
+                                                  Text="{Binding FeatureName}" 
+                                                  Style="{StaticResource FeatureNameStyle}"/>
+                                        
+                                        <!-- Status Badge -->
+                                        <Border Grid.Row="0" Grid.Column="1" 
+                                               Background="#EF4444" 
+                                               CornerRadius="12" 
+                                               Padding="8,2"
+                                               Visibility="{Binding IsLimitReached, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                            <TextBlock Text="LIMIT REACHED" 
+                                                      Foreground="White" 
+                                                      FontSize="10" 
+                                                      FontWeight="Bold"/>
+                                        </Border>
+                                        
+                                        <!-- Usage Progress -->
+                                        <ProgressBar Grid.Row="1" Grid.ColumnSpan="2" 
+                                                    Style="{StaticResource UsageProgressBar}"
+                                                    Value="{Binding UsagePercentage}"
+                                                    Maximum="100"
+                                                    Margin="0,4"/>
+                                        
+                                        <!-- Usage Statistics -->
+                                        <StackPanel Grid.Row="2" Grid.ColumnSpan="2" 
+                                                   Orientation="Horizontal" 
+                                                   Margin="0,4">
+                                            <TextBlock Text="{Binding UsageCount, StringFormat=Used: {0}}" 
+                                                      Style="{StaticResource UsageStatStyle}"
+                                                      Margin="0,0,12,0"/>
+                                            <TextBlock Text="{Binding UsageLimit, StringFormat=Limit: {0}}" 
+                                                      Style="{StaticResource UsageStatStyle}"
+                                                      Margin="0,0,12,0"/>
+                                            <TextBlock Text="{Binding RemainingUsage, StringFormat=Remaining: {0}}" 
+                                                      Style="{StaticResource UsageStatStyle}"/>
+                                        </StackPanel>
+                                        
+                                        <!-- Dates -->
+                                        <StackPanel Grid.Row="3" Grid.ColumnSpan="2" 
+                                                   Orientation="Horizontal" 
+                                                   Margin="0,4">
+                                            <TextBlock Text="{Binding FirstUsed, StringFormat=First Used: {0:MM/dd/yyyy}}" 
+                                                      Style="{StaticResource UsageStatStyle}"
+                                                      Margin="0,0,12,0"/>
+                                            <TextBlock Text="{Binding LastUsed, StringFormat=Last Used: {0:MM/dd/yyyy HH:mm}}" 
+                                                      Style="{StaticResource UsageStatStyle}"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </ScrollViewer>
+        </Border>
+        
+        <!-- Loading Indicator -->
+        <Border Grid.Row="3" x:Name="LoadingIndicator" 
+               Background="#80000000" 
+               Visibility="Collapsed">
+            <StackPanel HorizontalAlignment="Center" 
+                       VerticalAlignment="Center">
+                <ProgressBar IsIndeterminate="True" 
+                            Width="200" 
+                            Height="8" 
+                            Margin="0,0,0,8"/>
+                <TextBlock Text="Loading premium feature usage..." 
+                          Foreground="White" 
+                          HorizontalAlignment="Center"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

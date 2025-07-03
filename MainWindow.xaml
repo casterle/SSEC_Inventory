@@ -11,6 +11,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SSEC_Inventory"
+        xmlns:controls="clr-namespace:SSEC_Inventory.UserControls"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
    <Window.Resources>
@@ -94,7 +95,7 @@
          <ColumnDefinition Width="4*"/>
       </Grid.ColumnDefinitions>
 
-      <!-- TabControl with three tabs, handles selection change event -->
+      <!-- TabControl with four tabs, handles selection change event -->
       <TabControl Grid.ColumnSpan="3" SelectionChanged="TabControl_SelectionChanged">
          <TabItem Header="Tab 1" AutomationProperties.Name="Tab 1">
             <TextBlock Text="Content for Tab 1" Margin="10"/>
@@ -104,6 +105,9 @@
          </TabItem>
          <TabItem Header="Tab 3" AutomationProperties.Name="Tab 3">
             <TextBlock Text="Content for Tab 3" Margin="10" Background="{DynamicResource {x:Static SystemColors.AccentColorBrushKey}}"/>
+         </TabItem>
+         <TabItem Header="Premium Usage" AutomationProperties.Name="Premium Usage">
+            <controls:PremiumFeatureUsageControl x:Name="PremiumUsageControl"/>
          </TabItem>
       </TabControl>
 
